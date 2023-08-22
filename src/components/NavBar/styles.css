@@ -3,12 +3,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #333;
   display: flex;
   justify-content: space-around;
   align-items: center;
   height: 60px;
-  box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0.9375rem 0.9375rem 0rem 0rem;
+  border-top: 1px solid #43517d;
+  background: linear-gradient(180deg, #2d3653 0%, #1b1d34 100%);
+  box-shadow: 0px 14px 50px 0px rgba(0, 0, 0, 0.15);
 }
 
 .NavItem {
