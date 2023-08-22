@@ -1,5 +1,5 @@
 // import { Link } from "react-router-dom";
-import { FiltersOptionCard } from "../../components/FiltersOptionCard";
+import { FiltersOptionCard } from "../../components/Cards";
 import "./styles.css";
 
 const Filters = () => {
