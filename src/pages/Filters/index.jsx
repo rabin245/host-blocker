@@ -1,8 +1,43 @@
-// import { Link } from "react-router-dom";
 import { FiltersOptionCard } from "../../components/Cards";
+import useFilterStore from "../../state/filterState";
 import "./styles.css";
 
 const Filters = () => {
+  const setFilterOn = useFilterStore((state) => state.setFilterOn);
+  const setFilterOff = useFilterStore((state) => state.setFilterOff);
+  const basicFilter = useFilterStore((state) => state.basicFilter);
+  const fakeNewsFilter = useFilterStore((state) => state.fakeNewsFilter);
+  const gamblingFilter = useFilterStore((state) => state.gamblingFilter);
+  const pornFilter = useFilterStore((state) => state.pornFilter);
+  const socialFilter = useFilterStore((state) => state.socialFilter);
+
+  const filters = [
+    { title: "Basic Filters", name: "basicFilter", state: basicFilter },
+    { title: "Fake News", name: "fakeNewsFilter", state: fakeNewsFilter },
+    { title: "Gambling", name: "gamblingFilter", state: gamblingFilter },
+    { title: "Porn", name: "pornFilter", state: pornFilter },
+    { title: "Social", name: "socialFilter", state: socialFilter },
+  ];
+
+  const handleToggle = (e) => {
+    if (e.target.value === false) {
+      console.log(e.target.name, e.target.value);
+      setFilterOn(e.target.name);
+    } else {
+      console.log(e.target.name, e.target.value);
+      setFilterOff(e.target.name);
+    }
+  };
+
+  console.log(
+    "filters",
+    basicFilter,
+    fakeNewsFilter,
+    gamblingFilter,
+    pornFilter,
+    socialFilter
+  );
+
   return (
     <>
       <div className="FilterPage">
@@ -10,8 +45,15 @@ const Filters = () => {
           <h2>Filters</h2>
         </div>
         <div className="Content">
-          <FiltersOptionCard />
-          <FiltersOptionCard />
+          {filters.map((filter, index) => (
+            <FiltersOptionCard
+              key={index}
+              name={filter.name}
+              title={filter.title}
+              state={filter.state}
+              handleToggle={handleToggle}
+            />
+          ))}
         </div>
       </div>
     </>

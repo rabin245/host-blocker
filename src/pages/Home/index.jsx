@@ -1,7 +1,24 @@
 import { Link } from "react-router-dom";
 import "./styles.css";
+import useFilterStore from "../../state/filterState";
 
 const Home = () => {
+  const globalFilter = useFilterStore((state) => state.globalFilter);
+  const setGlobalFilterOn = useFilterStore((state) => state.setGlobalFilterOn);
+  const setGlobalFilterOff = useFilterStore(
+    (state) => state.setGlobalFilterOff
+  );
+
+  console.log(globalFilter);
+
+  const handleToggle = () => {
+    if (globalFilter === false) {
+      setGlobalFilterOn();
+    } else {
+      setGlobalFilterOff();
+    }
+  };
+
   return (
     <>
       <div className="HomePage">
@@ -15,7 +32,11 @@ const Home = () => {
             <button>View Filters</button>
           </Link>
           <label className="switch">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              value={globalFilter}
+              onClick={handleToggle}
+            />
             <span className="slider round"></span>
           </label>
         </div>
