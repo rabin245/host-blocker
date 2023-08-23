@@ -12,8 +12,8 @@ export default function FiltersOptionCard({
         <input
           name={name}
           type="checkbox"
-          value={state}
-          onClick={handleToggle}
+          checked={state}
+          onChange={() => handleToggle(name, state)}
         />
         <span className="slider round"></span>
       </label>

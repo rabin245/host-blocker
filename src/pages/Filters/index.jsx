@@ -19,13 +19,11 @@ const Filters = () => {
     { title: "Social", name: "socialFilter", state: socialFilter },
   ];
 
-  const handleToggle = (e) => {
-    if (e.target.value === false) {
-      console.log(e.target.name, e.target.value);
-      setFilterOn(e.target.name);
+  const handleToggle = (name, state) => {
+    if (state === false) {
+      setFilterOn(name);
     } else {
-      console.log(e.target.name, e.target.value);
-      setFilterOff(e.target.name);
+      setFilterOff(name);
     }
   };
 

@@ -34,8 +34,8 @@ const Home = () => {
           <label className="switch">
             <input
               type="checkbox"
-              value={globalFilter}
-              onClick={handleToggle}
+              checked={globalFilter}
+              onChange={handleToggle}
             />
             <span className="slider round"></span>
           </label>
