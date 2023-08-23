@@ -1,50 +1,62 @@
 import { create } from "zustand";
 
+const initialFiltersList = [
+  {
+    name: "Basic Filters",
+    url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+    status: false,
+  },
+  {
+    name: "Fake News",
+    url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-only/hosts",
+    status: false,
+  },
+  {
+    name: "Gambling",
+    url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/gambling-only/hosts",
+    status: false,
+  },
+  {
+    name: "Porn",
+    url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts",
+    status: false,
+  },
+  {
+    name: "Social",
+    url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/social-only/hosts",
+    status: false,
+  },
+];
+
 const useFilterStore = create((set) => ({
-  globalFilter: false,
-  basicFilter: false,
-  fakeNewsFilter: false,
-  pornFilter: false,
-  gamblingFilter: false,
-  socialFilter: false,
+  globalFilterStatus: false,
+  filtersList: initialFiltersList,
 
-  setGlobalFilterOn: () => {
-    set({
-      globalFilter: true,
-      basicFilter: true,
-      fakeNewsFilter: true,
-      pornFilter: true,
-      gamblingFilter: true,
-      socialFilter: true,
-    });
-  },
-  setGlobalFilterOff: () => {
-    set({
-      globalFilter: false,
-      basicFilter: false,
-      fakeNewsFilter: false,
-      pornFilter: false,
-      gamblingFilter: false,
-      socialFilter: false,
-    });
-  },
-  setFilterOn: (filter) => {
-    set({ [filter]: true, globalFilter: true });
-  },
-  setFilterOff: (filter) => {
+  toggleGlobalFilterStatus: (status) =>
+    set((state) => ({
+      globalFilterStatus: status,
+      filtersList: state.filtersList.map((filter, index) => {
+        return status
+          ? { ...filter, status: index === 0 }
+          : { ...filter, status: false };
+      }),
+    })),
+  toggleFilterStatus: (name) => {
     set((state) => {
-      const newState = { ...state, [filter]: false };
-      if (
-        !newState.basicFilter &&
-        !newState.fakeNewsFilter &&
-        !newState.pornFilter &&
-        !newState.gamblingFilter &&
-        !newState.socialFilter
-      ) {
-        newState.globalFilter = false;
-      }
+      const updatedFiltersList = state.filtersList.map((filter) => {
+        return filter.name === name
+          ? { ...filter, status: !filter.status }
+          : filter;
+      });
 
-      return newState;
+      const globalFilterStatus = updatedFiltersList.some(
+        (filter) => filter.status
+      );
+
+      return {
+        filtersList: updatedFiltersList,
+        globalFilterStatus: globalFilterStatus,
+      };
     });
   },
 }));

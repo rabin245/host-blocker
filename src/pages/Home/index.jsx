@@ -3,21 +3,19 @@ import "./styles.css";
 import useFilterStore from "../../state/filterState";
 
 const Home = () => {
-  const globalFilter = useFilterStore((state) => state.globalFilter);
-  const setGlobalFilterOn = useFilterStore((state) => state.setGlobalFilterOn);
-  const setGlobalFilterOff = useFilterStore(
-    (state) => state.setGlobalFilterOff
+  const globalFilterStatus = useFilterStore(
+    (state) => state.globalFilterStatus
+  );
+  const toggleGlobalFilterStatus = useFilterStore(
+    (state) => state.toggleGlobalFilterStatus
   );
 
-  console.log(globalFilter);
-
   const handleToggle = () => {
-    if (globalFilter === false) {
-      setGlobalFilterOn();
-    } else {
-      setGlobalFilterOff();
-    }
+    if (globalFilterStatus) toggleGlobalFilterStatus(false);
+    else toggleGlobalFilterStatus(true);
   };
+
+  console.log(globalFilterStatus);
 
   return (
     <>
@@ -34,7 +32,7 @@ const Home = () => {
           <label className="switch">
             <input
               type="checkbox"
-              checked={globalFilter}
+              checked={globalFilterStatus}
               onChange={handleToggle}
             />
             <span className="slider round"></span>

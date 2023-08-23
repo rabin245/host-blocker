@@ -2,7 +2,7 @@ import "./style.css";
 export default function FiltersOptionCard({
   title,
   name,
-  state,
+  checked,
   handleToggle,
 }) {
   return (
@@ -12,8 +12,8 @@ export default function FiltersOptionCard({
         <input
           name={name}
           type="checkbox"
-          checked={state}
-          onChange={() => handleToggle(name, state)}
+          checked={checked}
+          onChange={() => handleToggle(name)}
         />
         <span className="slider round"></span>
       </label>
