@@ -3,25 +3,28 @@ import useSWR from "swr";
 
 function extractDataFromStream(dataStream) {
   const lines = dataStream.split("\n");
-  const extractedData = { date: "", addresses: [] };
+  const extractedData = { date: "", hosts: [] };
 
   for (const line of lines) {
     if (line.startsWith("# Date:")) {
       extractedData.date = line.substring(8).trim();
     } else if (line.startsWith("0.0.0.0")) {
       const address = line.split(/\s+/)[1];
-      extractedData.addresses.push(address);
+      extractedData.hosts.push(address);
     }
   }
 
   return extractedData;
 }
 
-const fetcher = (url) =>
+export const fetcher = (url) =>
   axios(url).then((res) => extractDataFromStream(res.data));
 
-export function useHostsLists(api) {
-  const { data, error } = useSWR(api, fetcher);
+const useHostsLists = (api) => {
+  const { data, error } = useSWR(api, fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+  });
 
   if (error) {
     return {
@@ -32,10 +35,11 @@ export function useHostsLists(api) {
 
   if (!data) {
     return {
-      error: null,
-      data: null,
+      date: null,
+      hosts: [],
     };
   }
-  console.log(data);
   return data;
-}
+};
+
+export { useHostsLists };

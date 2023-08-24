@@ -10,6 +10,9 @@ const Filters = () => {
 
   console.log(filtersList.map((filter) => filter.status));
 
+  const globalHostsList = useFilterStore((state) => state.globalHostsList);
+  console.log(globalHostsList);
+
   return (
     <>
       <div className="FilterPage">
@@ -24,6 +27,7 @@ const Filters = () => {
               title={filter.name}
               checked={filter.status}
               handleToggle={toggleFilterStatus}
+              url={filter.url}
             />
           ))}
         </div>

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const initialFiltersList = [
+export const initialFiltersList = [
   {
     name: "Basic Filters",
     url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import "./styles.css";
 import useFilterStore from "../../state/filterState";
-// import { useEffect } from "react";
-import { useHostsLists } from "../../hooks/useHostsLists";
 
 const Home = () => {
   const globalFilterStatus = useFilterStore(
@@ -12,17 +10,13 @@ const Home = () => {
     (state) => state.toggleGlobalFilterStatus
   );
 
+  const globalHostsList = useFilterStore((state) => state.globalHostsList);
+  console.log(globalHostsList);
+
   const handleToggle = () => {
     if (globalFilterStatus) toggleGlobalFilterStatus(false);
     else toggleGlobalFilterStatus(true);
   };
-
-  console.log(globalFilterStatus);
-
-  const res = useHostsLists(
-    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
-  );
-  console.log(res);
 
   return (
     <>
