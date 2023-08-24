@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom";
 import "./styles.css";
+import useFilterStore from "../../state/filterState";
 // import { useEffect } from "react";
 import { useHostsLists } from "../../hooks/useHostsLists";
 
 const Home = () => {
+  const globalFilterStatus = useFilterStore(
+    (state) => state.globalFilterStatus
+  );
+  const toggleGlobalFilterStatus = useFilterStore(
+    (state) => state.toggleGlobalFilterStatus
+  );
+
+  const handleToggle = () => {
+    if (globalFilterStatus) toggleGlobalFilterStatus(false);
+    else toggleGlobalFilterStatus(true);
+  };
+
+  console.log(globalFilterStatus);
+
   const res = useHostsLists(
     "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   );
@@ -22,7 +37,11 @@ const Home = () => {
             <button>View Filters</button>
           </Link>
           <label className="switch">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={globalFilterStatus}
+              onChange={handleToggle}
+            />
             <span className="slider round"></span>
           </label>
         </div>
