@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 import "./styles.css";
+// import { useEffect } from "react";
+import { useHostsLists } from "../../hooks/useHostsLists";
 
 const Home = () => {
+  const res = useHostsLists(
+    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
+  );
+  console.log(res);
+
   return (
     <>
       <div className="HomePage">
