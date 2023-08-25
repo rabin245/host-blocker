@@ -27,7 +27,6 @@ const Filters = () => {
               title={filter.name}
               checked={filter.status}
               handleToggle={toggleFilterStatus}
-              url={filter.url}
             />
           ))}
         </div>

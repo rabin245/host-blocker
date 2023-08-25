@@ -1,7 +1,7 @@
-import localforage from "localforage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { get, set } from "idb-keyval";
+import { del, get, set, keys } from "idb-keyval";
+import { useEffect, useState } from "react";
 
 export const initialFiltersList = [
   {
@@ -67,15 +67,10 @@ const initialHostsList = [
   },
 ];
 
-const storage = localforage.createInstance({
-  name: "filter-storage",
-  storeName: "zustand-data",
-});
-
 const IDBStorage = {
   getItem: async (key) => await get(key),
   setItem: async (key, value) => await set(key, value),
-  removeItem: async (key) => await set(key, null),
+  removeItem: async (key) => await del(key),
 };
 
 const useFilterStore = create(
@@ -197,17 +192,48 @@ const useFilterStore = create(
     }),
     {
       name: "filter-storage",
-      // getStorage: () => ({
-      //   getItem: async (key) => await storage.getItem(key),
-      //   setItem: async (key, value) => await storage.setItem(key, value),
-      //   removeItem: async (key) => await storage.removeItem(key),
-      // }),
-      // storage: createJSONStorage(() => storage),
-
-      // getStorage: () => IDBStorage,
       storage: createJSONStorage(() => IDBStorage),
+      onRehydrateStorage: (state) => {
+        console.log("hydration starts", state);
+
+        return (state, error) => {
+          if (error) {
+            console.log("an error happened during hydration", error);
+          } else {
+            console.log("hydration finished", state);
+          }
+        };
+      },
     }
   )
 );
+
+export const useHydration = () => {
+  const [hydrated, setHydrated] = useState(false);
+
+  const isStoreSaved = async () => {
+    const keysList = await keys();
+    const storeName = useFilterStore.persist.getOptions().name;
+
+    return keysList.includes(storeName);
+  };
+
+  useEffect(() => {
+    const unsubFinishHydration = useFilterStore.persist.onFinishHydration(
+      () => {
+        console.log("this is the event when hydration is finished");
+        setHydrated(true);
+      }
+    );
+
+    // setHydrated(useFilterStore.persist.hasHydrated());
+
+    return () => {
+      unsubFinishHydration();
+    };
+  }, []);
+
+  return { hydrated, isStoreSaved };
+};
 
 export default useFilterStore;

@@ -7,18 +7,7 @@ export default function FiltersOptionCard({
   name,
   checked,
   handleToggle,
-  url,
 }) {
-  const { date, hosts } = useHostsLists(url);
-
-  const updateHostsList = useFilterStore((state) => state.updateHostsList);
-
-  useEffect(() => {
-    if (checked) {
-      updateHostsList(name, date, hosts);
-    }
-  }, [checked, updateHostsList, hosts]);
-
   return (
     <div className="FilterOption">
       <p>{title}</p>

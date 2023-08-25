@@ -21,15 +21,17 @@ export const fetcher = (url) =>
   axios(url).then((res) => extractDataFromStream(res.data));
 
 const useHostsLists = (api) => {
-  const { data, error } = useSWR(api, fetcher, {
+  const { data, error, isValidating } = useSWR(api, fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
+    suspense: true,
   });
 
   if (error) {
     return {
       error,
       data: null,
+      isValidating,
     };
   }
 
@@ -37,9 +39,10 @@ const useHostsLists = (api) => {
     return {
       date: null,
       hosts: [],
+      isValidating,
     };
   }
-  return data;
+  return { ...data, isValidating };
 };
 
 export { useHostsLists };
