@@ -1,4 +1,7 @@
+import localforage from "localforage";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { get, set } from "idb-keyval";
 
 export const initialFiltersList = [
   {
@@ -64,115 +67,147 @@ const initialHostsList = [
   },
 ];
 
-const useFilterStore = create((set, get) => ({
-  globalFilterStatus: false,
-  filtersList: initialFiltersList,
+const storage = localforage.createInstance({
+  name: "filter-storage",
+  storeName: "zustand-data",
+});
 
-  globalHostsList: initialGlobalHostsList,
-  hostslist: initialHostsList,
+const IDBStorage = {
+  getItem: async (key) => await get(key),
+  setItem: async (key, value) => await set(key, value),
+  removeItem: async (key) => await set(key, null),
+};
 
-  toggleGlobalFilterStatus: async (status) => {
-    set((state) => {
-      let globalHostsList = state.globalHostsList;
+const useFilterStore = create(
+  persist(
+    (set, get) => ({
+      globalFilterStatus: false,
+      filtersList: initialFiltersList,
 
-      const basicHostsList = state.hostslist[0].hosts;
+      globalHostsList: initialGlobalHostsList,
+      hostslist: initialHostsList,
 
-      if (status) {
-        globalHostsList = { ...initialGlobalHostsList, basic: basicHostsList };
-      } else {
-        globalHostsList = initialGlobalHostsList;
-      }
+      toggleGlobalFilterStatus: async (status) => {
+        set((state) => {
+          let globalHostsList = state.globalHostsList;
 
-      return {
-        globalFilterStatus: status,
-        filtersList: state.filtersList.map((filter, index) => {
-          return status
-            ? { ...filter, status: index === 0 }
-            : { ...filter, status: false };
-        }),
-        globalHostsList: globalHostsList,
-      };
-    });
-  },
-  toggleFilterStatus: (name) => {
-    set((state) => {
-      const updatedFiltersList = state.filtersList.map((filter) => {
-        return filter.name === name
-          ? { ...filter, status: !filter.status }
-          : filter;
-      });
+          const basicHostsList = state.hostslist[0].hosts;
 
-      const globalFilterStatus = updatedFiltersList.some(
-        (filter) => filter.status
-      );
+          if (status) {
+            globalHostsList = {
+              ...initialGlobalHostsList,
+              basic: basicHostsList,
+            };
+          } else {
+            globalHostsList = initialGlobalHostsList;
+          }
 
-      let globalHostsList = state.globalHostsList;
-
-      const hostsList = updatedFiltersList.find(
-        (filter) => filter.name === name
-      ).status
-        ? state.hostslist.find((filter) => filter.name === name).hosts
-        : [];
-
-      switch (name) {
-        case "Basic Filters":
-          globalHostsList = {
-            ...globalHostsList,
-            basic: hostsList,
+          return {
+            globalFilterStatus: status,
+            filtersList: state.filtersList.map((filter, index) => {
+              return status
+                ? { ...filter, status: index === 0 }
+                : { ...filter, status: false };
+            }),
+            globalHostsList: globalHostsList,
           };
-          break;
-        case "Fake News":
-          globalHostsList = {
-            ...globalHostsList,
-            fakeNews: hostsList,
+        });
+      },
+      toggleFilterStatus: (name) => {
+        set((state) => {
+          const updatedFiltersList = state.filtersList.map((filter) => {
+            return filter.name === name
+              ? { ...filter, status: !filter.status }
+              : filter;
+          });
+
+          const globalFilterStatus = updatedFiltersList.some(
+            (filter) => filter.status
+          );
+
+          let globalHostsList = state.globalHostsList;
+
+          const hostsList = updatedFiltersList.find(
+            (filter) => filter.name === name
+          ).status
+            ? state.hostslist.find((filter) => filter.name === name).hosts
+            : [];
+
+          switch (name) {
+            case "Basic Filters":
+              globalHostsList = {
+                ...globalHostsList,
+                basic: hostsList,
+              };
+              break;
+            case "Fake News":
+              globalHostsList = {
+                ...globalHostsList,
+                fakeNews: hostsList,
+              };
+              break;
+            case "Gambling":
+              globalHostsList = {
+                ...globalHostsList,
+                gambling: hostsList,
+              };
+              break;
+            case "Porn":
+              globalHostsList = {
+                ...globalHostsList,
+                porn: hostsList,
+              };
+              break;
+            case "Social":
+              globalHostsList = {
+                ...globalHostsList,
+                social: hostsList,
+              };
+              break;
+          }
+
+          return {
+            filtersList: updatedFiltersList,
+            globalFilterStatus: globalFilterStatus,
+            globalHostsList: globalHostsList,
           };
-          break;
-        case "Gambling":
-          globalHostsList = {
-            ...globalHostsList,
-            gambling: hostsList,
+        });
+      },
+      updateHostsList: (name, date, hosts) => {
+        if (!hosts) return;
+
+        const oldDate = get().hostslist.find(
+          (filter) => filter.name === name
+        ).date;
+
+        if (oldDate === date) return;
+
+        set((state) => {
+          const updatedHostsList = state.hostslist.map((filter) => {
+            return filter.name === name
+              ? { name: filter.name, date: date, hosts: hosts }
+              : filter;
+          });
+
+          return {
+            hostslist: updatedHostsList,
           };
-          break;
-        case "Porn":
-          globalHostsList = {
-            ...globalHostsList,
-            porn: hostsList,
-          };
-          break;
-        case "Social":
-          globalHostsList = {
-            ...globalHostsList,
-            social: hostsList,
-          };
-          break;
-      }
+        });
+      },
+    }),
+    {
+      name: "filter-storage",
+      // getStorage: () => ({
+      //   getItem: async (key) => await storage.getItem(key),
+      //   setItem: async (key, value) => await storage.setItem(key, value),
+      //   removeItem: async (key) => await storage.removeItem(key),
+      // }),
+      // storage: createJSONStorage(() => storage),
 
-      return {
-        filtersList: updatedFiltersList,
-        globalFilterStatus: globalFilterStatus,
-        globalHostsList: globalHostsList,
-      };
-    });
-  },
-  updateHostsList: (name, date, hosts) => {
-    if (!hosts) return;
-
-    const oldDate = get().hostslist.find((filter) => filter.name === name).date;
-
-    if (oldDate === date) return;
-
-    set((state) => {
-      const updatedHostsList = state.hostslist.map((filter) => {
-        return filter.name === name
-          ? { name: filter.name, date: date, hosts: hosts }
-          : filter;
-      });
-
-      return {
-        hostslist: updatedHostsList,
-      };
-    });
-  },
-}));
+      // getStorage: () => IDBStorage,
+      storage: createJSONStorage(() => IDBStorage),
+    }
+  )
+);
 
 export default useFilterStore;
