@@ -10,9 +10,19 @@ function extractDataFromStream(dataStream) {
       extractedData.date = line.substring(8).trim();
     } else if (line.startsWith("0.0.0.0")) {
       const address = line.split(/\s+/)[1];
-      extractedData.hosts.push(address);
+      const formattedHost = {
+        trigger: {
+          urlFilter: address,
+        },
+        action: {
+          type: "block",
+        },
+      };
+      extractedData.hosts.push(formattedHost);
     }
   }
+
+  extractedData.hosts = JSON.stringify(extractedData.hosts);
 
   return extractedData;
 }
