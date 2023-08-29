@@ -1,5 +1,6 @@
 .HomePage {
-  width: 95vw;
+  box-sizing: border-box;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
