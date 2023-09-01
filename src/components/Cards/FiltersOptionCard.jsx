@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { useHostsLists } from "../../hooks/useHostsLists";
-import useFilterStore from "../../state/filterState";
 import "./style.css";
 export default function FiltersOptionCard({
   title,
