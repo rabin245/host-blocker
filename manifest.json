@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Host Blocker",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["declarativeNetRequest", "declarativeNetRequestFeedback"],
+  "background": {
+    "service_worker": "src/background-script/background.js",
+    "type": "module"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "src/background-script/rules.json"
+      }
+    ]
+  }
+}
