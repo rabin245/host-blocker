@@ -16,9 +16,9 @@ const Filters = () => {
   return (
     <>
       <div className="FilterPage">
-        <div className="Title">
+        {/* <div className="Title">
           <h2>Filters</h2>
-        </div>
+        </div> */}
         <div className="Content">
           {filtersList.map((filter, index) => (
             <FiltersOptionCard

@@ -21,12 +21,12 @@ const Home = () => {
   return (
     <>
       <div className="HomePage">
-        <div className="Title">
+        {/* <div className="Title">
           <h2>Home</h2>
-        </div>
+        </div> */}
         <div className="Content">
           <h1>Not Protected</h1>
-          <p>Tap on the swutch to enable protection</p>
+          <p>Tap on the switch to enable protection</p>
           <Link to="/filter">
             <button>View Filters</button>
           </Link>

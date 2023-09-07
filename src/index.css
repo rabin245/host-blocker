@@ -14,7 +14,8 @@
   -webkit-text-size-adjust: 100%;
 }
 body {
-  margin: 0;
+  width: 20rem;
+  height: 24rem;
   display: flex;
 }
 
