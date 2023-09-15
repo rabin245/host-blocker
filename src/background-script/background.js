@@ -1,48 +1,109 @@
-import fs from "fs";
-// import { create } from "zustand";
-// import { subscribeWithSelector } from "zustand/middleware";
-// import useFilterStore from "../state/filterState";
+const basicRules = [
+  {
+    id: 1,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: "facebook.com",
+      resourceTypes: ["main_frame"],
+    },
+  },
+];
 
-// const globalFilterStatus = useFilterStore((state) => state.globalFilterStatus);
-// console.log("hello this is from background script");
-// console.log("this is test", globalFilterStatus);
+const fakeNewsRules = [
+  {
+    id: 2,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: "twitter.com",
+      resourceTypes: ["main_frame"],
+    },
+  },
+];
 
-// const useStore = create(
-//   subscribeWithSelector(() => ({
-//     globalFilterStatus: false,
-//   }))
-// );
+const gamblingRules = [
+  {
+    id: 3,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: "instagram.com",
+      resourceTypes: ["main_frame"],
+    },
+  },
+];
 
-// const globalFilterStatus = useFilterStore.getState().globalFilterStatus;
-// console.log("Global Filter Status", globalFilterStatus);
+const pornRules = [
+  {
+    id: 4,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: "whatsapp.com",
+      resourceTypes: ["main_frame"],
+    },
+  },
+];
 
-// const unsubscribe = useFilterStore.subscribe(
-//   (state) => state, // Subscribe to all state changes
-//   (newState, prevState) => {
-//     console.log("State changed:", newState);
-//     console.log("Previous state:", prevState);
-//     // Handle state changes here, if needed
-//   }
-// {
-//   fireImmediately: true,
-// }
-// );
+const socialRules = [
+  {
+    id: 5,
+    priority: 1,
+    action: { type: "block" },
+    condition: {
+      urlFilter: "linkedin.com",
+      resourceTypes: ["main_frame"],
+    },
+  },
+];
 
-// const pawStatus = useFilterStore.getState().globalFilterStatus;
-// console.log("Paw Status", pawStatus);
+const rulesMap = new Map();
 
-// const unsub = useFilterStore.subscribe(
-//   (state) => state.globalFilterStatus,
-//   console.log
-// );
+rulesMap.set("basicRules", basicRules);
+rulesMap.set("fakeNewsRules", fakeNewsRules);
+rulesMap.set("gamblingRules", gamblingRules);
+rulesMap.set("pornRules", pornRules);
+rulesMap.set("socialRules", socialRules);
 
-// const unsub1 = useFilterStore.subscribe(
-//   (state) => state.globalFilterStatus,
-//   (newVal, old) => console.log(newVal, old)
-// );
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  const { type, payload } = request;
 
-// unsub();
-// unsub1();
+  const dynamicRules = await chrome.declarativeNetRequest.getDynamicRules();
+  const dynamicRulesIds = dynamicRules.map((rule) => rule.id);
+  console.log(dynamicRulesIds);
+
+  switch (type) {
+    case "globalFilterStatus": {
+      const { status } = payload;
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: dynamicRulesIds,
+        addRules: status ? rulesMap.get("basicRules") : [],
+      });
+      break;
+    }
+    case "filterStatus": {
+      const { filtersList } = payload;
+
+      const activeFilters = filtersList
+        .filter((filter) => filter.status)
+        .map((filter) => filter.link);
+
+      console.log(activeFilters);
+
+      const rules = activeFilters.map((filter) => rulesMap.get(filter));
+      console.log(rules, rules.flat());
+
+      await chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: dynamicRulesIds,
+        addRules: rules.flat(),
+      });
+      break;
+    }
+    default:
+      break;
+  }
+});
 
 chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((e) => {
   const msg = `Navigation blocked to ${e.request.url} on tab ${e.request.tabId}.`;
@@ -50,19 +111,3 @@ chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((e) => {
 });
 
 console.log("Service worker started.");
-
-// const blockedHosts = ["google.com", "facebook.com"];
-
-// chrome.declarativeNetRequest.onRequest.register(
-//   { urls: ["*://*/*"] },
-//   (details) => {
-//     const { requestHeaders } = details;
-
-//     for (const host of blockedHosts) {
-//       if (requestHeaders.get("Host") === host) {
-//         details.abort();
-//         return;
-//       }
-//     }
-//   }
-// );
