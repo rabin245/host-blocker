@@ -1,62 +1,8 @@
-const basicRules = [
-  {
-    id: 1,
-    priority: 1,
-    action: { type: "block" },
-    condition: {
-      urlFilter: "facebook.com",
-      resourceTypes: ["main_frame"],
-    },
-  },
-];
-
-const fakeNewsRules = [
-  {
-    id: 2,
-    priority: 1,
-    action: { type: "block" },
-    condition: {
-      urlFilter: "twitter.com",
-      resourceTypes: ["main_frame"],
-    },
-  },
-];
-
-const gamblingRules = [
-  {
-    id: 3,
-    priority: 1,
-    action: { type: "block" },
-    condition: {
-      urlFilter: "instagram.com",
-      resourceTypes: ["main_frame"],
-    },
-  },
-];
-
-const pornRules = [
-  {
-    id: 4,
-    priority: 1,
-    action: { type: "block" },
-    condition: {
-      urlFilter: "whatsapp.com",
-      resourceTypes: ["main_frame"],
-    },
-  },
-];
-
-const socialRules = [
-  {
-    id: 5,
-    priority: 1,
-    action: { type: "block" },
-    condition: {
-      urlFilter: "linkedin.com",
-      resourceTypes: ["main_frame"],
-    },
-  },
-];
+import basicRules from "./rules/basicRules.json";
+import fakeNewsRules from "./rules/fakeNewsRules.json";
+import gamblingRules from "./rules/gamblingRules.json";
+import pornRules from "./rules/pornRules.json";
+import socialRules from "./rules/socialRules.json";
 
 const rulesMap = new Map();
 

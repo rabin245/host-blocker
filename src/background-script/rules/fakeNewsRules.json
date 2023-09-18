@@ -1,0 +1,56 @@
+[
+  {
+    "id": 6,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "onlinekhabar.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "ekantipur.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 8,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "bbc.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 9,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "thehimalayantimes.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 10,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "annapurnapost.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 11,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "kathmandupost.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  }
+]

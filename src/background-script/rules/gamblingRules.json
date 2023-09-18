@@ -1,0 +1,65 @@
+[
+  {
+    "id": 12,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "betus.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 13,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "1xbet.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 14,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "stake.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 15,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "Slots.lv",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 16,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "bovada.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 17,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "bitstarz.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 18,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "trustdice.win",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  }
+]

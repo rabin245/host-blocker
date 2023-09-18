@@ -1,0 +1,47 @@
+[
+  {
+    "id": 20,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "facebook.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 21,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "twitter.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 22,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "instagram.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 23,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "whatsapp.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 24,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "linkedin.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  }
+]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "githb.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "rereddit.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "ukcoffee.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "gmial.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "youtbe.com",
+      "resourceTypes": ["main_frame", "script"]
+    }
+  }
+]
