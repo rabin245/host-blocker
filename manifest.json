@@ -13,9 +13,29 @@
   "declarative_net_request": {
     "rule_resources": [
       {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "src/background-script/rules.json"
+        "id": "basicRules",
+        "enabled": false,
+        "path": "src/background-script/rules/basicRules.json"
+      },
+      {
+        "id": "fakeNewsRules",
+        "enabled": false,
+        "path": "src/background-script/rules/fakeNewsRules.json"
+      },
+      {
+        "id": "gamblingRules",
+        "enabled": false,
+        "path": "src/background-script/rules/gamblingRules.json"
+      },
+      {
+        "id": "pornRules",
+        "enabled": false,
+        "path": "src/background-script/rules/pornRules.json"
+      },
+      {
+        "id": "socialRules",
+        "enabled": false,
+        "path": "src/background-script/rules/socialRules.json"
       }
     ]
   }

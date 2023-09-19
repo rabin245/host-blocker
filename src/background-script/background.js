@@ -1,48 +1,24 @@
-import basicRules from "./rules/basicRules.json";
-import fakeNewsRules from "./rules/fakeNewsRules.json";
-import gamblingRules from "./rules/gamblingRules.json";
-import pornRules from "./rules/pornRules.json";
-import socialRules from "./rules/socialRules.json";
-
-const rulesMap = new Map();
-
-rulesMap.set("basicRules", basicRules);
-rulesMap.set("fakeNewsRules", fakeNewsRules);
-rulesMap.set("gamblingRules", gamblingRules);
-rulesMap.set("pornRules", pornRules);
-rulesMap.set("socialRules", socialRules);
-
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   const { type, payload } = request;
 
-  const dynamicRules = await chrome.declarativeNetRequest.getDynamicRules();
-  const dynamicRulesIds = dynamicRules.map((rule) => rule.id);
-  console.log(dynamicRulesIds);
+  const enabledRulesets =
+    await chrome.declarativeNetRequest.getEnabledRulesets();
 
   switch (type) {
     case "globalFilterStatus": {
       const { status } = payload;
-      await chrome.declarativeNetRequest.updateDynamicRules({
-        removeRuleIds: dynamicRulesIds,
-        addRules: status ? rulesMap.get("basicRules") : [],
+      await chrome.declarativeNetRequest.updateEnabledRulesets({
+        disableRulesetIds: enabledRulesets,
+        enableRulesetIds: status ? ["basicRules"] : [],
       });
       break;
     }
     case "filterStatus": {
-      const { filtersList } = payload;
+      const { filter, status } = payload;
 
-      const activeFilters = filtersList
-        .filter((filter) => filter.status)
-        .map((filter) => filter.link);
-
-      console.log(activeFilters);
-
-      const rules = activeFilters.map((filter) => rulesMap.get(filter));
-      console.log(rules, rules.flat());
-
-      await chrome.declarativeNetRequest.updateDynamicRules({
-        removeRuleIds: dynamicRulesIds,
-        addRules: rules.flat(),
+      await chrome.declarativeNetRequest.updateEnabledRulesets({
+        disableRulesetIds: status ? [] : [filter],
+        enableRulesetIds: status ? [filter] : [],
       });
       break;
     }

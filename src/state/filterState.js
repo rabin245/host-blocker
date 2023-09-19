@@ -24,7 +24,6 @@ export const initialFiltersList = [
     name: "Porn",
     url: "https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/porn-only/hosts",
     status: false,
-
     link: "pornRules",
   },
   {
@@ -60,8 +59,13 @@ const useFilterStore = create(
       },
       toggleFilterStatus: (name) => {
         set((state) => {
-          const updatedFiltersList = state.filtersList.map((filter) => {
-            return filter.name === name
+          let updatedFilterIndex;
+          const updatedFiltersList = state.filtersList.map((filter, index) => {
+            const filterMatched = filter.name === name;
+
+            if (filterMatched) updatedFilterIndex = index;
+
+            return filterMatched
               ? { ...filter, status: !filter.status }
               : filter;
           });
@@ -73,7 +77,8 @@ const useFilterStore = create(
           chrome.runtime.sendMessage({
             type: "filterStatus",
             payload: {
-              filtersList: updatedFiltersList,
+              filter: updatedFiltersList[updatedFilterIndex].link,
+              status: updatedFiltersList[updatedFilterIndex].status,
             },
           });
 
